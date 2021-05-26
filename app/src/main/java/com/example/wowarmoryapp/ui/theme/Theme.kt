@@ -9,8 +9,8 @@ import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
     primary = Color(0xff263238),
-//    primaryVariant = Purple700,
-    secondary = Color((0xff006064)),
+    primaryVariant = Teal200,
+    secondary = Color(0xff006064),
     background = Color(0xff000a12),
     surface = Color(0xff4f5b62),
 
@@ -22,7 +22,7 @@ private val DarkColorPalette = darkColors(
 
 private val LightColorPalette = lightColors(
     primary = Color(0xffcfd8dc),
-//    primaryVariant = Purple700,
+    primaryVariant = Teal200,
     secondary = Color(0xff80cbc4),
     background = Color(0xffffffff),
     surface = Color(0xff9ea7aa),

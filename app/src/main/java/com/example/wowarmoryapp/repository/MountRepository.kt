@@ -20,7 +20,8 @@ class MountRepository @Inject constructor(
         val response = try {
             api.getMountsList(namespace, locale, accessToken)
         } catch(e: Exception) {
-            return Resource.Error("An unknown error occured.")
+
+            return Resource.Error(e.message?: "Unknown error occurred while getting mounts list.")
         }
         return Resource.Success(response)
     }

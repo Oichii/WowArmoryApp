@@ -28,9 +28,9 @@ object AppModule {
 //    // create Base64 encodet string
 //    val basic = "Basic " + credentials.encodeToByteArray().toString()
 
-    private val client =  OkHttpClient.Builder()
-        .addInterceptor(BasicAuthInterceptor( Constants.CLIENT_ID, Constants.CLIENT_SECRET))
-        .build()
+//    private val client =  OkHttpClient.Builder()
+//        .addInterceptor(BasicAuthInterceptor( Constants.CLIENT_ID, Constants.CLIENT_SECRET))
+//        .build()
 
     @Singleton
     @Provides

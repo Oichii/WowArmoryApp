@@ -1,5 +1,6 @@
 package com.example.wowarmoryapp.mountsList
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,7 +25,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +36,9 @@ import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import coil.request.ImageRequest
+import com.example.wowarmoryapp.R
 import com.example.wowarmoryapp.data.models.MountListEntry
+import com.example.wowarmoryapp.ui.theme.fontFamily
 import com.google.accompanist.coil.CoilImage
 import timber.log.Timber
 
@@ -45,7 +50,15 @@ fun MountsListScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(5.dp))
+            Image(
+                painter = painterResource(id = R.drawable.wow_logo),
+                contentDescription = "World of Warcraft logo",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             SearchBar(
                 hint = "search ...",
                 modifier = Modifier
@@ -54,7 +67,7 @@ fun MountsListScreen(navController: NavController) {
             ) {
 
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             MountList(navController = navController)
         }
     }
@@ -65,11 +78,11 @@ fun MountList(
     navController: NavController,
     viewModel: MountListViewModel = hiltNavGraphViewModel()
 ) {
-    Timber.i("helloooooooooo")
     val mountList by remember { viewModel.mountList }
     val endReached by remember { viewModel.endReached }
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
+//    val  allMounts = viewModel.allMountsList.size
 
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
         val itemCount = if(mountList.size % 2 == 0) {
@@ -79,10 +92,17 @@ fun MountList(
         }
         println("items: $itemCount")
         items(itemCount) {
+//            println("item of lazy list $it")
             if(it >= itemCount - 1 && !endReached) {
                 println("help im here")
-                viewModel.loadMountList()
+//                viewModel.loadMountList()
+                viewModel.fillMountsList()
             }
+//            if(it >= itemCount - 1 && itemCount<allMounts/2) {
+//                println("help im here")
+////                viewModel.loadMountList()
+//                viewModel.fillMountsList(itemCount, itemCount+20)
+//            }
             ListRow(rowIndex = it, entries = mountList, navController = navController)
         }
     }
@@ -198,6 +218,8 @@ fun ListEntry(
             Text(
                 text = entry.name,
                 fontSize = 20.sp,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Light,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -231,7 +253,6 @@ fun ListRow(
         }
         Spacer(modifier = Modifier.height(16.dp))
     }
-
 }
 
 @Composable
