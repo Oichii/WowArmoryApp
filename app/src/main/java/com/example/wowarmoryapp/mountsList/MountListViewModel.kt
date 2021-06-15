@@ -49,30 +49,32 @@ class MountListViewModel @Inject constructor(
             when (val allMounts = repository.getMountList(NAMESPACE, LOCALE, BuildConfig.TOKEN)) {
                 is Resource.Success -> {
                     val mountEntries = allMounts.data!!.mounts.map { entry ->
-                        Timber.i("entry $entry")
 
-                        var url = ""
+                        var url = "" // image url
+
                         when (val mount =
                             repository.getMount(entry.id, NAMESPACE, LOCALE, BuildConfig.TOKEN)) {
                             is Resource.Success -> {
-                                when (val image = repository.getDisplay(
+                                url = when (val image = repository.getDisplay(
                                     mount.data!!.creature_displays[0].id,
                                     NAMESPACE,
                                     LOCALE,
                                     BuildConfig.TOKEN
                                 )) {
                                     is Resource.Success -> {
-                                        url = image.data!!.assets[0].value
+                                        image.data!!.assets[0].value
 
                                     }
                                     is Resource.Error -> {
-                                        url = ""
+                                        ""
                                     }
                                 }
 
                             }
                             is Resource.Error -> {
+
                                 url = ""
+                                loadError.value = "Problem with loading mount"
                             }
                         }
                         println("hello this is url: $url")
@@ -104,28 +106,28 @@ class MountListViewModel @Inject constructor(
             println("current index: $currIdx, $end")
             val mountEntries = allMountsList.subList(currIdx, end).map { entry ->
                 Timber.i("entry $entry")
-                //TODO: get image url
+
                 var url = ""
                 when (val mount =
                     repository.getMount(entry.id, NAMESPACE, LOCALE, BuildConfig.TOKEN)) {
                     is Resource.Success -> {
-                        when (val image = repository.getDisplay(
+                        url = when (val image = repository.getDisplay(
                             mount.data!!.creature_displays[0].id,
                             NAMESPACE,
                             LOCALE,
                             BuildConfig.TOKEN
                         )) {
                             is Resource.Success -> {
-                                url = image.data!!.assets[0].value
-
+                                image.data!!.assets[0].value
                             }
                             is Resource.Error -> {
-                                url = ""
+                                Timber.w("image file not loaded")
+                                ""
                             }
                         }
-
                     }
                     is Resource.Error -> {
+                        Timber.w("mount info not loaded")
                         url = ""
                     }
                 }
@@ -154,7 +156,7 @@ class MountListViewModel @Inject constructor(
                     allMountsList = allMounts.data!!.mounts
                     loadError.value = ""
                     isLoading.value = false
-                    println("allmounts len: ${allMountsList.size}")
+
                     fillMountsList()
                 }
                 is Resource.Error -> {
