@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
+
 import coil.request.ImageRequest
 import com.example.wowarmoryapp.R
 import com.example.wowarmoryapp.data.models.MountListEntry
@@ -153,7 +153,7 @@ fun SearchBar(
                 .background(Color.White, CircleShape)
                 .padding(horizontal = 20.dp, vertical = 12.dp)
                 .onFocusChanged {
-                    isHintDisplayed = it != FocusState.Active
+//                    isHintDisplayed = it != FocusState.isFocused && text.isEmpty()
                 }
         )
         if (isHintDisplayed) {
